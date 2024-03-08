@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    public void login(
+    public String  login(
             LoginRequest loginRequest,
             HttpServletResponse httpServletResponse
     ){
@@ -24,7 +24,7 @@ public class UserService {
 
         if(optionalUser.isPresent()){
             var userDto = optionalUser.get();
-            if(userDto.getPassword().equals(pw)){
+           /* if(userDto.getPassword().equals(pw)){
                 //cookie 해당 정보 저장
                 var cookie = new Cookie("atuorizetion-cookie", userDto.getId());
                 cookie.setDomain("localhost");
@@ -33,11 +33,14 @@ public class UserService {
                 cookie.setHttpOnly(true);
                 cookie.setMaxAge(-1); //session
                 httpServletResponse.addCookie(cookie);
-            }
-
+            }*/
+        if(userDto.getPassword().equals(pw)){
+            return userDto.getId();
+        }
 
         }else{
             throw new RuntimeException("User Not Found");
         }
+        return null;
     }
 }
